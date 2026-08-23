@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Member {
+  id        String         @id @default(cuid())
+  name      String
+  initials  String
+  hue       String
+  createdAt DateTime       @default(now())
+  comments  Comment[]
+  cards     CardAssignee[]
+}
+
+model Board {
+  id          String     @id @default(cuid())
+  title       String
+  titleEn     String
+  description String
+  descriptionEn String
+  createdAt   DateTime   @default(now())
+  lists       List[]
+  activities  Activity[]
+}
+
+model List {
+  id        String   @id @default(cuid())
+  boardId   String
+  board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  title     String
+  titleEn   String
+  sortOrder Int
+  cards     Card[]
+}
+
+model Card {
+  id           String         @id @default(cuid())
+  listId       String
+  list         List           @relation(fields: [listId], references: [id], onDelete: Cascade)
+  title        String
+  titleEn      String
+  description  String         @default("")
+  descriptionEn String        @default("")
+  sortOrder    Int
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  assignees    CardAssignee[]
+  comments     Comment[]
+  attachments  Attachment[]
+  activities   Activity[]
+}
+
+model CardAssignee {
+  cardId   String
+  memberId String
+  card     Card   @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  member   Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@id([cardId, memberId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  cardId    String
+  card      Card     @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  memberId  String
+  member    Member   @relation(fields: [memberId], references: [id])
+  body      String
+  createdAt DateTime @default(now())
+}
+
+model Attachment {
+  id        String   @id @default(cuid())
+  cardId    String
+  card      Card     @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  filename  String
+  url       String
+  createdAt DateTime @default(now())
+}
+
+model Activity {
+  id          String   @id @default(cuid())
+  boardId     String
+  board       Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  cardId      String?
+  card        Card?    @relation(fields: [cardId], references: [id], onDelete: SetNull)
+  kind        String
+  message     String
+  messageEn   String
+  createdAt   DateTime @default(now())
+}

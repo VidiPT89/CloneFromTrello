@@ -1,0 +1,43 @@
+{
+  "name": "clone-from-trello",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bilingual Kanban boards with lists, cards, live drag-and-drop, assignees, attachments, comments and activity history — Next.js, Prisma, PostgreSQL and Pusher.",
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "lint": "eslint",
+    "test": "tsx --test tests/*.test.ts",
+    "db:push": "prisma db push",
+    "db:seed": "tsx prisma/seed.ts",
+    "postinstall": "prisma generate"
+  },
+  "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "@prisma/client": "^6.13.0",
+    "framer-motion": "^12.23.12",
+    "next": "16.3.2",
+    "pusher": "^5.2.0",
+    "pusher-js": "^8.4.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.2",
+    "prisma": "^6.13.0",
+    "tailwindcss": "^4",
+    "tsx": "^4.20.3",
+    "typescript": "^5"
+  }
+}

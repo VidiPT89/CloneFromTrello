@@ -1,0 +1,14 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: quadro
+      POSTGRES_PASSWORD: quadro
+      POSTGRES_DB: quadro
+    ports:
+      - "55434:5432"
+    volumes:
+      - quadro_pg:/var/lib/postgresql/data
+
+volumes:
+  quadro_pg:
