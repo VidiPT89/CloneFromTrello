@@ -2,6 +2,8 @@
 
 > Bilingual Kanban boards with live drag-and-drop, assignees, attachments, comments and an activity log, painted in the ividi.dev palette (black, burnt orange, amber).
 
+[![CI](https://github.com/VidiPT89/CloneFromTrello/actions/workflows/ci.yml/badge.svg)](https://github.com/VidiPT89/CloneFromTrello/actions/workflows/ci.yml)
+
 [🐞 Report Bug](https://github.com/VidiPT89/CloneFromTrello/issues) · [✨ Request Feature](https://github.com/VidiPT89/CloneFromTrello/issues)
 
 QUADRO is a Next.js editorial desk: boards, lists and cards you can drag across lanes while other sessions stay in sync. Assignees, file attachments, comments and a board activity stream sit on each card. The UI is European Portuguese / English, with the language toggle remembered in `localStorage`. Live updates go through Pusher when keys are set, or Server-Sent Events on a single machine.
