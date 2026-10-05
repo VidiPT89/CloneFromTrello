@@ -61,7 +61,7 @@ export function CardModal({
     <div className="fixed inset-0 z-40 flex items-start justify-center overflow-y-auto bg-black/70 p-4 pt-16">
       <div className="w-full max-w-2xl rounded-[28px] border border-[#f4e6c8]/15 bg-[#0b0704] p-6">
         <form onSubmit={save} className="grid gap-3">
-          <input className="field display text-2xl uppercase" value={title} onChange={(e) => setTitle(e.target.value)} />
+          <input className="field display text-2xl uppercase" aria-label={t.cardTitle} value={title} onChange={(e) => setTitle(e.target.value)} />
           <textarea className="field min-h-28" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder={t.description} />
           <p className="text-xs uppercase tracking-[0.2em] text-[#ffaa00]">{t.assignees}</p>
           <div className="flex flex-wrap gap-2">
