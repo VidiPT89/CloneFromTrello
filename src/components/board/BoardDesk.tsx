@@ -103,6 +103,10 @@ function Lane({
   )
 }
 
+async function fetchBoard(boardId: string): Promise<BoardRow | null> {
+  return readJson<BoardRow | null>(await fetch(`/api/boards/${boardId}`), null)
+}
+
 export function BoardDesk({ boardId }: { boardId: string }) {
   const { t, locale } = useLocale()
   const [board, setBoard] = useState<BoardRow | null>(null)
@@ -112,18 +116,31 @@ export function BoardDesk({ boardId }: { boardId: string }) {
   const [listTitle, setListTitle] = useState('')
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }))
 
-  const load = useCallback(async () => {
-    const next = await readJson<BoardRow | null>(await fetch(`/api/boards/${boardId}`), null)
+  const apply = useCallback((next: BoardRow | null) => {
     setBoard(next)
     setOpen((current) => {
       if (!current || !next) return current
       return next.lists.flatMap((list) => list.cards).find((card) => card.id === current.id) || current
     })
-  }, [boardId])
+  }, [])
+
+  const load = useCallback(async () => {
+    apply(await fetchBoard(boardId))
+  }, [apply, boardId])
 
   useEffect(() => {
-    void load()
-  }, [load])
+    let ignore = false
+    fetchBoard(boardId)
+      .then((next) => {
+        if (!ignore) apply(next)
+      })
+      .catch(() => {
+        /* offline: keep the board on screen */
+      })
+    return () => {
+      ignore = true
+    }
+  }, [apply, boardId])
 
   useEffect(() => {
     void (async () => {

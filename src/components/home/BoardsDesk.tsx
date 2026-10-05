@@ -15,6 +15,10 @@ type BoardRow = {
   _count: { lists: number }
 }
 
+async function fetchBoards(): Promise<BoardRow[]> {
+  return readJson<BoardRow[]>(await fetch('/api/boards'), [])
+}
+
 export function BoardsDesk() {
   const { t, locale } = useLocale()
   const [boards, setBoards] = useState<BoardRow[]>([])
@@ -22,12 +26,21 @@ export function BoardsDesk() {
   const [description, setDescription] = useState('')
 
   async function load() {
-    const rows = await readJson<BoardRow[]>(await fetch('/api/boards'), [])
-    setBoards(rows)
+    setBoards(await fetchBoards())
   }
 
   useEffect(() => {
-    void load()
+    let ignore = false
+    fetchBoards()
+      .then((rows) => {
+        if (!ignore) setBoards(rows)
+      })
+      .catch(() => {
+        /* offline: no boards to show */
+      })
+    return () => {
+      ignore = true
+    }
   }, [])
 
   async function onCreate(event: FormEvent) {
